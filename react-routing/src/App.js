@@ -5,6 +5,7 @@ import axios from 'axios';
 
 function App() {
   const [files, setFile] = useState()
+  const [image, setImage] = useState([])
   // const handleChange = (e) => {
   //   setFile(e.target.value)
   // }
@@ -27,6 +28,7 @@ function App() {
           "Content-Type": 'multipart/form-data'
         }
       });
+      
       console.log(res)
     } catch (error) {
       if(error.response.status === 500){
@@ -35,7 +37,14 @@ function App() {
         console.log(error.response.data.msg)
       }
     }
+    // alert("Image Saved")
   } 
+
+  const getIamges = async() => {
+    const response = await axios.get('http://localhost:3001/images');
+    console.log(response.data.images)
+    setImage(response.data.images)
+  }
 
   // const onSubmit = () => {}
   return (
@@ -46,6 +55,15 @@ function App() {
         </div>
         <button onClick={onSubmit}> Click </button>
       </form>
+      <button onClick={getIamges}>Get Images</button>
+      {/* {Array.isArray(image) && image.map(image => {
+          return <img
+            key={image._id}
+            src={`data:image/jpg;base64,${image.imageData.data}`}
+            alt={image.imageName}
+            style={{ width: '200px', height: '200px', margin: '10px' }}
+          />
+      })} */}
     </div>
   );
 }
